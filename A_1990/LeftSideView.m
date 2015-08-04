@@ -8,120 +8,167 @@
 
 #import "LeftSideView.h"
 
+
+
+
 @implementation LeftSideView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self addSubview];
+        [self addSubviews];
     }
     return self;
 }
 
-- (void)addSubview
+- (void)addSubviews
 {
     // 添加背景图片
-    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"1"]];
-    self.backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
+//    self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"1"]];
+//    self.backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
     
     CGRect imageViewRect = [[UIScreen mainScreen] bounds];
     imageViewRect.size.width += 589;
     self.backgroundImageView.frame = imageViewRect;
-    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFit;
+    //背景图充满scrollView的内容视图
+    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     
     [self addSubview:self.backgroundImageView];
-//    self.contentSize = CGSizeMake(self.frame.size.width, 850);
-//    self.showsVerticalScrollIndicator = NO;
+    self.contentSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
+    self.showsVerticalScrollIndicator = NO;
+    self.bounces = NO;
+ 
+    //添加五芒星
+    NSDictionary *valueDic = kInitPentacle;
+    //创建五芒星视图
+    self.spiderView = [[BTSpiderPlotterView alloc]initWithFrame:CGRectMake(25, 50, 200 , 200) valueDictionary:valueDic];
+//    self.spiderView.backgroundColor = [UIColor yellowColor];
+    [self.spiderView setMaxValue:1.0];
+    [self addSubview:_spiderView];
+    [self.spiderView release];
     
-    NSDictionary *viewDictionary = @{ @"imageView" : self.backgroundImageView };
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[imageView]" options:0 metrics:nil views:viewDictionary]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[imageView]" options:0 metrics:nil views:viewDictionary]];
+    // 添加头像
+    self.headImageView = [[EGOImageView alloc] initWithPlaceholderImage:[UIImage imageNamed:@"profile"]]; //设置默认头像图片
+    self.headImageView.frame = CGRectMake(70, 70, 60, 60);
+//    _headImageView.backgroundColor = [UIColor colorWithRed:130.0/255.0 green:185.0/255.0 blue:190.0/255.0 alpha:1.0];
+    _headImageView.layer.masksToBounds = YES;
+    _headImageView.layer.cornerRadius = _headImageView.bounds.size.width/2;
+    [self.spiderView addSubview:_headImageView];
     
     
-    // 添加登陆Button
-    self.loginButton = [Function createButtonWithName:@"登陆" andFrame:CGRectMake(koriginX + 30, Koriginy - 80, Kwidth, Kheight)];
-    self.loginButton.titleLabel.font = [UIFont boldSystemFontOfSize:17];
-    [self.loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    // 添加 进入个人中心 Button
+    self.centerButton = [Function createButtonWithName:@"个人中心" andFrame:CGRectMake(koriginX , Koriginy - 60, Kwidth, Kheight)];
+    self.centerButton.titleLabel.font = [UIFont boldSystemFontOfSize:17];
+    [self.centerButton setTitleColor:[UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [self addSubview:self.centerButton];
     
-    [self addSubview:self.loginButton];
+    self.loginBtn = [Function createButtonWithName:@"登录" andFrame:CGRectMake(koriginX + Kwidth + kSpace , Koriginy - 60, Kwidth, Kheight)];
+    self.loginBtn.titleLabel.font = [UIFont boldSystemFontOfSize:17];
+    [self.loginBtn setTitleColor:[UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+    [self addSubview:self.loginBtn];
+    
     // 添加首页Button
-
-    self.firstPageButton = [Function createButtonWithName:@"首页" andFrame:CGRectMake(koriginX, Koriginy, Kwidth, Kheight)];
-    self.firstPageButton.backgroundColor = [UIColor blueColor];
+    self.firstPageButton = [Function createButtonWithName:@"随便" andFrame:CGRectMake(koriginX, Koriginy, Kwidth, Kheight)];
+    self.firstPageButton.backgroundColor = [UIColor colorWithRed:36.0/ 255.0 green:47.0 / 255.0 blue:61.0 / 255.0 alpha:1.0];
+    self.firstPageButton.tintColor = [UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0];
     [self addSubview:self.firstPageButton];
+    
     // 添加收藏Button
-    self.collectButton = [Function createButtonWithName:@"收藏" andFrame:CGRectMake(self.firstPageButton.frame.origin.x, self.firstPageButton.frame.origin.y + self.firstPageButton.frame.size.height + kSpace, Kwidth, Kheight)];
-    self.collectButton.backgroundColor = [UIColor blueColor];
+    self.collectButton = [Function createButtonWithName:@"收藏" andFrame:CGRectMake(koriginX + Kwidth + kSpace , Koriginy , Kwidth, Kheight)];
+    self.collectButton.backgroundColor = [UIColor colorWithRed:36.0/ 255.0 green:47.0 / 255.0 blue:61.0 / 255.0 alpha:1.0];
+    self.collectButton.tintColor = [UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0];
     [self addSubview:self.collectButton];
-    // 商业button
-    self.commerceButton = [Function createButtonWithName:@"商业" andFrame:CGRectMake(self.collectButton.frame.origin.x, self.collectButton.frame.origin.y + self.collectButton.frame.size.height + kSpace, Kwidth, Kheight)];
-    self.commerceButton.backgroundColor = [UIColor blueColor];
-    self.commerceButton.tag = 101;
+    
+    // 1.商业button
+    self.commerceButton = [Function createButtonWithName:@"商业" andFrame:CGRectMake(koriginX , Koriginy + Kheight + kSpace, Kwidth, Kheight)];
+    self.commerceButton.backgroundColor = [UIColor colorWithRed:36.0/ 255.0 green:47.0 / 255.0 blue:61.0 / 255.0 alpha:1.0];
+    self.commerceButton.tintColor = [UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0];
+    self.commerceButton.tag = kBusiness;
     [self addSubview:self.commerceButton];
-    // 智能Button
-    self.intelligentButton = [Function createButtonWithName:@"智能" andFrame:CGRectMake(self.commerceButton.frame.origin.x, self.commerceButton.frame.origin.y + self.commerceButton.frame.size.height + kSpace, Kwidth, Kheight)];
-    self.intelligentButton.backgroundColor = [UIColor blueColor];
-    self.intelligentButton.tag = 102;
+    
+    // 2.智能Button
+    self.intelligentButton = [Function createButtonWithName:@"智能" andFrame:CGRectMake(self.commerceButton.frame.origin.x + Kwidth + kSpace , self.commerceButton.frame.origin.y , Kwidth, Kheight)];
+    self.intelligentButton.backgroundColor = [UIColor colorWithRed:36.0/ 255.0 green:47.0 / 255.0 blue:61.0 / 255.0 alpha:1.0];
+    self.intelligentButton.tintColor = [UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0];
+    self.intelligentButton.tag = kIntelligent;
     [self addSubview:self.intelligentButton];
-    // 设计Button
-    self.desginButton = [Function createButtonWithName:@"设计" andFrame:CGRectMake(self.intelligentButton.frame.origin.x, self.intelligentButton.frame.origin.y + self.intelligentButton.frame.size.height + kSpace, Kwidth, Kheight)];
-    self.desginButton.backgroundColor = [UIColor blueColor];
-    self.intelligentButton.tag = 103;
+    
+    // 3.设计Button
+    self.desginButton = [Function createButtonWithName:@"设计" andFrame:CGRectMake(koriginX, self.commerceButton.frame.origin.y + Kheight + kSpace, Kwidth, Kheight)];
+    self.desginButton.backgroundColor = [UIColor colorWithRed:36.0/ 255.0 green:47.0 / 255.0 blue:61.0 / 255.0 alpha:1.0];
+    self.desginButton.tintColor = [UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0];
+    self.desginButton.tag = kDesign;
     [self addSubview:self.desginButton];
-    // 时尚button
-    self.fashinoButton = [Function createButtonWithName:@"时尚" andFrame:CGRectMake(self.desginButton.frame.origin.x, self.desginButton.frame.origin.y + self.desginButton.frame.size.height + kSpace, Kwidth, Kheight)];
-    self.fashinoButton.backgroundColor = [UIColor blueColor];
-    self.fashinoButton.tag = 104;
-    [self addSubview:self.fashinoButton];
-    // 娱乐button
-    self.entertainButton = [Function createButtonWithName:@"娱乐" andFrame:CGRectMake(self.fashinoButton.frame.origin.x, self.fashinoButton.frame.origin.y + self.fashinoButton.frame.size.height + kSpace, Kwidth, Kheight)];
-    self.entertainButton.backgroundColor = [UIColor blueColor];
-    self.entertainButton.tag = 105;
+    
+    // 4.时尚button
+    self.fashionButton = [Function createButtonWithName:@"时尚" andFrame:CGRectMake(koriginX + Kwidth + kSpace , self.desginButton.frame.origin.y , Kwidth, Kheight)];
+    self.fashionButton.backgroundColor = [UIColor colorWithRed:36.0/ 255.0 green:47.0 / 255.0 blue:61.0 / 255.0 alpha:1.0];
+    self.fashionButton.tintColor = [UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0];
+    self.fashionButton.tag = kFashion;
+    [self addSubview:self.fashionButton];
+    
+    // 5.娱乐button
+    self.entertainButton = [Function createButtonWithName:@"娱乐" andFrame:CGRectMake(koriginX, self.desginButton.frame.origin.y + Kheight + kSpace, Kwidth, Kheight)];
+    self.entertainButton.backgroundColor = [UIColor colorWithRed:36.0/ 255.0 green:47.0 / 255.0 blue:61.0 / 255.0 alpha:1.0];
+    self.entertainButton.tintColor = [UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0];
+    self.entertainButton.tag = kEntertainment;
     [self addSubview:self.entertainButton];
-    // 城市button
-    self.cityButton = [Function createButtonWithName:@"城市" andFrame:CGRectMake(self.entertainButton.frame.origin.x, self.entertainButton.frame.origin.y + self.entertainButton.frame.size.height + kSpace, Kwidth, Kheight)];
-    self.cityButton.backgroundColor = [UIColor blueColor];
-    self.cityButton.tag = 106;
+    
+    // 6.城市button
+    self.cityButton = [Function createButtonWithName:@"城市" andFrame:CGRectMake(koriginX + Kwidth + kSpace, self.entertainButton.frame.origin.y , Kwidth, Kheight)];
+    self.cityButton.backgroundColor = [UIColor colorWithRed:36.0/ 255.0 green:47.0 / 255.0 blue:61.0 / 255.0 alpha:1.0];
+    self.cityButton.tintColor = [UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0];
+    self.cityButton.tag = kCity;
     [self addSubview:self.cityButton];
-    // 游戏button
-    self.gameButton = [Function createButtonWithName:@"游戏" andFrame:CGRectMake(self.cityButton.frame.origin.x, self.cityButton.frame.origin.y + self.cityButton.frame.size.height + kSpace, Kwidth, Kheight)];
-    self.gameButton.backgroundColor = [UIColor blueColor];
-    self.gameButton.tag = 107;
+    
+    // 7.游戏button
+    self.gameButton = [Function createButtonWithName:@"游戏" andFrame:CGRectMake(koriginX , self.entertainButton.frame.origin.y + Kheight + kSpace, Kwidth, Kheight)];
+    self.gameButton.backgroundColor = [UIColor colorWithRed:36.0/ 255.0 green:47.0 / 255.0 blue:61.0 / 255.0 alpha:1.0];
+    self.gameButton.tintColor = [UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0];
+    self.gameButton.tag = kGame;
     [self addSubview:self.gameButton];
     
+    // 8.音乐button
+    self.mvButton = [Function createButtonWithName:@"音乐" andFrame:CGRectMake(koriginX + Kwidth + kSpace, self.gameButton.frame.origin.y , Kwidth, Kheight)];
+    self.mvButton.backgroundColor = [UIColor colorWithRed:36.0/ 255.0 green:47.0 / 255.0 blue:61.0 / 255.0 alpha:1.0];
+    self.mvButton.tintColor = [UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0];
+    self.mvButton.tag = kMV;
+    [self addSubview:self.mvButton];
+    
+    
     // 设置Button
- 
-    self.setButton = [Function createButtonWithName:@"设置" andFrame:CGRectMake(self.gameButton.frame.origin.x + 10, self.gameButton.frame.origin.y + self.gameButton.frame.size.height + kSpace * 2, Kwidth, Kheight)];
+    self.setButton = [Function createButtonWithName:@"设置" andFrame:CGRectMake(koriginX , self.gameButton.frame.origin.y + Kheight + kSpace, Kwidth, Kheight)];
+    self.setButton.tintColor = [UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0];
     [self addSubview:self.setButton];
+    
     // 查找Button
-    self.searchButton = [Function createButtonWithName:@"查找" andFrame:CGRectMake(self.setButton.frame.origin.x + self.setButton.frame.size.width + kSpace, self.setButton.frame.origin.y, Kwidth, Kheight)];
+    self.searchButton = [Function createButtonWithName:@"搜索" andFrame:CGRectMake(koriginX + Kwidth + kSpace, self.setButton.frame.origin.y , Kwidth, Kheight)];
+    self.searchButton.tintColor = [UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0];
     [self addSubview:self.searchButton];
+    
+    
     
 }
 
 - (void)dealloc
 {
-    [self.backgroundImageView release];
-    [self.loginButton release];
-    [self.firstPageButton release];
-    [self.collectButton release];
-    [self.commerceButton release];
-    [self.intelligentButton release];
-    [self.desginButton release];
-    [self.fashinoButton release];
-    [self.entertainButton release];
-    [self.cityButton release];
-    [self.gameButton release];
-    [self.setButton release];
-    [self.searchButton release];
+    [_backgroundImageView release];
+    [_spiderView release];
+    [_headImageView release];
+    [_centerButton release];
+    [_firstPageButton release];
+    [_collectButton release];
+    [_commerceButton release];
+    [_intelligentButton release];
+    [_desginButton release];
+    [_fashionButton release];
+    [_entertainButton release];
+    [_cityButton release];
+    [_gameButton release];
+    [_mvButton release];
+    [_setButton release];
+    [_searchButton release];
     [super dealloc];
 }
 

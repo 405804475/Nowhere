@@ -20,6 +20,7 @@
             self.id90 = dic[@"id"];
             self.title = dic[@"title"];
             self.image_smallURL = dic[@"image_small"];
+            self.white_imageURL = dic[@"white_image"];
         }
     }
     return self;
@@ -31,6 +32,7 @@
     _id90 = nil;
     _title = nil;
     _image_smallURL = nil;
+    _white_imageURL = nil;
     [super dealloc];
 }
 

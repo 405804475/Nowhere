@@ -23,12 +23,14 @@
 
 @interface NetworkEngine : NSObject
 
+
+
 //外界初始化网络请求的方法
 +(id)networkEngineWithURL:(NSURL *)url params:(NSDictionary *)params delegate:(id<NetworkEngineDelegate>)delegate;
 //设置请求方式
 -(void)setHTTPType:(NSString *)method;
 //启动网络请求
--(void)start;
+-(void)startWithDic:(NSDictionary *)dic;
 
 
 

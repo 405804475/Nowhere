@@ -14,4 +14,13 @@
 
 @property (nonatomic , retain) NSString *webHtml;
 
+@property (nonatomic , retain) PostModel *model;
+
+// 用于保存收藏数据到本地文件
+@property (nonatomic , retain) NSMutableArray *dataArray;
+// 收藏按钮
+@property (nonatomic , retain) UIBarButtonItem *collectItem;
+
+
+
 @end

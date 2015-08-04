@@ -17,6 +17,8 @@
 
 @property (nonatomic , retain) NSString *image_smallURL; // 分类展示LOGO
 
+@property (nonatomic , retain) NSString *white_imageURL; 
+
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
 @end

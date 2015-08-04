@@ -37,10 +37,10 @@
     self.descriptionLabel.numberOfLines = 0;
 
     // imageSmallView
-//    self.imageSmallView = [[EGOImageView alloc] initWithFrame:CGRectMake(10, 160, 60, 60)];
+    self.imageSmallView = [[EGOImageView alloc] initWithFrame:CGRectMake(10, kBigImageViewHeight - 60, 50, 50)];
     
     
-//    [self.bigImageView addSubview:self.imageSmallView];
+    [self.bigImageView addSubview:self.imageSmallView];
     [self.contentView addSubview:self.descriptionLabel];
     [self.contentView addSubview:self.bigImageView];
     [self.contentView addSubview:self.titleLabel];

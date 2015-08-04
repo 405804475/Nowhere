@@ -21,14 +21,46 @@
 #import "CategoryModel.h"
 #import "PapersCell.h"
 #import "HomeCell.h"
-#import "ListModel.h"
 #import "TWTSideMenuViewController.h"
+#import "DetailsViewController.h"
+#import "SearchViewController.h"
+#import "SetViewController.h"
+#import "Reachability.h"
 
+//下载
+#import "AFNetworking.h"
+#import "Helper.h"
+
+
+//灌水效果
+#import "SXWaveCell.h"
+#import "MBProgressHUD.h"
+
+//五芒星
+#import "BTSpiderPlotterView.h"
+
+//MV界面
+#import "MTVCell.h"
+#import "MTVModel.h"
+#import "MTVTableViewController.h"
+#import "MovieViewController.h"
+
+//友盟社会化分享
+#import "UMSocial.h"
+#import "UMSocialSinaHandler.h"
+#import "UMFeedback.h"
+
+//清除缓存
+#import "EGOCache.h"
+
+//状态栏高度
 #define kStatusBarHeight 20
 
 // 刷新数据
 #import "MJRefresh.h"
 #import "MyDownLoadGitFooter.h"
+
+#import "MBProgressHUD.h"
 
 //home 页面相关设置
 #define kTopBtnHeight 60
@@ -50,11 +82,35 @@
 #define kToolBarY 627
 
 
-#pragma mark button 宏定义
 
-#define koriginX 60
-#define Koriginy 200
+//left侧边栏按钮布局
+#define koriginX 30
+#define Koriginy 320
 #define kSpace 30
 #define Kwidth 80
 #define Kheight 30
+
+//侧边栏分类按钮tag值
+#define kBusiness 118
+#define kDesign 117
+#define kEntertainment 103
+#define kIntelligent 104
+#define kFashion 119
+#define kCity 105
+#define kGame 154
+#define kMV 171
+
+#define kInitPentacle @{@"shangye":@"0.6" , @"zhineng":@"0.6" , @"sheji":@"0.6" , @"shishang":@"0.6" , @"yule":@"0.6"}
+
+#define kTintColor [UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0]
+#define kBackgroundColor [UIColor colorWithRed:36.0 / 255.0 green:47.0 / 255.0 blue:61.0 / 255.0 alpha:1.0]
+
+//MV列表图片尺寸
+#define kMtvImageViewHeight 135
+#define kMtcImageViewWidth 240
+
+
+
+
+
 

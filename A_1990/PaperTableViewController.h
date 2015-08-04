@@ -10,6 +10,6 @@
 
 @interface PaperTableViewController : UITableViewController
 
-//@property (nonatomic , retain) UITableView *tableView;
+
 
 @end

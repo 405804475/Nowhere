@@ -38,6 +38,7 @@
     self.tableView.showsVerticalScrollIndicator = NO;
     
     self.lastTime = @"0";
+    
     [self getDataFromUrl];
     
     
@@ -63,7 +64,7 @@
         NSString *url = [NSString stringWithFormat:@"http://app.qdaily.com/app/papers/index/%@.json?" , self.lastTime];
         NetworkEngine *engine = [NetworkEngine networkEngineWithURL:[NSURL URLWithString:url] params:nil delegate:self];
         
-        [engine start];
+        [engine startWithDic:nil];
     }
     
     // 结束刷新
@@ -75,7 +76,7 @@
 -(void)networkDidFinishLoading:(NetworkEngine *)engine withInfo:(NSData *)data
 {
 
-#warning 数据刷新  -- 当 所有 有效数据加载完时,程序会崩溃 (原因: 当最后一组数据加载完时,last_time的value值为null,关键性key值has_more为FALSE,之前都为TRUE)
+#pragma mark - 数据刷新  -- 当 所有 有效数据加载完时,程序会崩溃 (原因: 当最后一组数据加载完时,last_time的value值为null,关键性key值has_more为FALSE,之前都为TRUE)
     NSError *error = nil;
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
     
@@ -84,25 +85,16 @@
     NSLog(@"%@" , self.lastTime);
     for (int i = 0; i < arr.count; i++) {
         NSDictionary *dict = [[arr objectAtIndex:i] objectForKey:@"post"];
-        PostModel *item = [[PostModel alloc] init];
+        PostModel *item = [[PostModel alloc] initWithDictionary:dict];
         
         //添加判断,剔除"投票"类内容
         if (![dict objectForKey:@"image"]) {
-            item.imageViewURL = [dict objectForKey:@"image"];
             NSString *imageURl = [[arr objectAtIndex:i] objectForKey:@"image"];
             item.imageViewURL = imageURl;
-            item.id90 = [dict objectForKey:@"id"];
-            item.title = [dict objectForKey:@"title"];
-            item.description90 = [dict objectForKey:@"description"];   
-            item.appview = [dict objectForKey:@"appview"];;
-            
-            item.category.image_smallURL = [[dict objectForKey:@"category"] objectForKey:@"image_small"];
-            
             [self.papersModels addObject:item];
             
             [item release];
         }
-        
     }
     
     //下拉刷新
@@ -118,13 +110,15 @@
     // 拿到数据之后, 刷新tableView
     [self.tableView reloadData];
     
-
 }
 
-#pragma mark - 下拉刷新 ( *** 待定 *** )
+#pragma mark - 下拉刷新
 -(void)loadNewData
 {
     self.lastTime = @"0";
+    
+    [self.papersModels removeAllObjects];
+    [self.tableView reloadData];
     [self getDataFromUrl];
 }
 
@@ -173,7 +167,6 @@
     // 获取文章大图
     cell.bigImageView.imageURL = [NSURL URLWithString:model.imageViewURL];
     // 获取category小图
-    
     cell.imageSmallView.imageURL = [NSURL URLWithString:model.category.image_smallURL];
     
     
@@ -186,18 +179,18 @@
     DetailsViewController *detailVC = [[DetailsViewController alloc] init];
     PostModel *model = [self.papersModels objectAtIndex:indexPath.row];
     detailVC.webHtml = model.appview;
+    detailVC.model = model;
+    
     [self presentViewController:detailVC animated:YES completion:nil];
     
     
 }
 
 
-
-
-#pragma mark - 隐藏状态栏
+//#pragma mark - 隐藏状态栏
 //- (BOOL)prefersStatusBarHidden
 //{
-//    return YES;
+//    return NO;
 //}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

@@ -16,12 +16,17 @@
     if (self) {
         //判断字典是否存在
         if (![dic isKindOfClass:[NSNull class]]) {
+            
             self.id90 = dic[@"id"];
             self.title = dic[@"title"];
             self.description90 = dic[@"description"];
             self.publish_time = dic[@"publish_time"];
-//            self.comment_count = dic[@"comment_count"];
-//            self.praise_count  = dic[@"praise_count"];
+            if (![dic[@"comment_count"] isKindOfClass:[NSNull class]]) {
+                self.comment_count = dic[@"comment_count"];
+            }
+            if (![dic[@"praise_count"] isKindOfClass:[NSNull class]]) {
+                self.praise_count  = dic[@"praise_count"];
+            }
             self.appview = dic[@"appview"];
             
             self.category = [[CategoryModel alloc]initWithDictionary:dic[@"category"]];
@@ -39,6 +44,7 @@
     _publish_time = nil;
     _comment_count = nil;
     _praise_count = nil;
+    _appview = nil;
     [_category release];
     [super dealloc];
 }

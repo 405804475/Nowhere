@@ -12,5 +12,7 @@
 
 @property (nonatomic , retain) EGOImageView *homeImage;
 @property (nonatomic , retain) UILabel *titleLabel;
+@property (nonatomic , retain) EGOImageView *whiteImage;
+
 
 @end

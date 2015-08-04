@@ -14,8 +14,8 @@
 {
     [super prepare];
     NSMutableArray *refreshingImages = [NSMutableArray array];
-    for (NSUInteger i = 1; i <= 46; i++) {
-        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"footerView%zd", i]];
+    for (NSUInteger i = 1; i <= 6; i++) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"footview%zd", i]];
         NSLog(@"%zd", i);
         
         [refreshingImages addObject:image];

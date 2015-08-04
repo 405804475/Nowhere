@@ -39,13 +39,20 @@
     
     for (int i = 0 ; i < [pages count] ; i++) {
         EGOImageView *image = [[EGOImageView alloc]init];
+        UILabel *label = [Function createLabelWithName:nil andFrame:CGRectMake(20 , self.frame.size.height - 50 - 20, self.frame.size.width - 40, 50)];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont systemFontOfSize:20];
+        label.numberOfLines = 0;
+        label.userInteractionEnabled = YES;
         image.userInteractionEnabled = YES;
         image.frame = CGRectMake(self.frame.size.width * i , 0, self.frame.size.width, self.frame.size.height);
         PostModel *model = (PostModel *)[pages objectAtIndex:i];
         NSString *urlStr = model.imageViewURL;
+        label.text = model.title;
         image.imageURL = [NSURL URLWithString:urlStr];
         image.tag = 101 + i;
         
+        [image addSubview:label];
         [self.myScrollView addSubview:image];
         [image release];
     }
@@ -69,6 +76,8 @@
 
 -(void)addTimer
 {
+//    self.timer = [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(nextImage) userInfo:nil repeats:YES];
+#warning 轮播图定时器开启
     self.timer = [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(nextImage) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
 }
@@ -91,11 +100,16 @@
 //scrollView滚动时调用
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    NSLog(@"滚动中");
+//    NSLog(@"滚动中");
     
 //    CGFloat scrollViewW = scrollView.frame.size.width;
     CGFloat x = scrollView.contentOffset.x;
     int page = x / self.myScrollView.frame.size.width;
+    
+    if (page == self.myPageControl.numberOfPages - 1) {
+        page = 0;
+    }
+    
     self.myPageControl.currentPage = page;
 }
 

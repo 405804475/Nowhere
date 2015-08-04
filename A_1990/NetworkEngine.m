@@ -73,7 +73,7 @@
 }
 
 #pragma mark - 启动网络的方法
--(void)start
+-(void)startWithDic:(NSDictionary *)dic
 {
     if ([self.HTTPMethod isEqualToString:@"GET"] && self.stringFromParams) {
         NSString *getUrlStr = [self.url.absoluteString stringByAppendingFormat:@"?%@" , self.stringFromParams];
@@ -82,6 +82,8 @@
     }
     //创建可变的请求对象 （cachePolicy参数写错）
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:60];
+    
+    request.allHTTPHeaderFields = dic;
     
     //设置请求方式
     request.HTTPMethod = self.HTTPMethod;

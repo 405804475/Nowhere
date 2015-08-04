@@ -10,6 +10,8 @@
 
 @interface MainViewController ()<UIScrollViewDelegate>
 
+
+
 @end
 
 @implementation MainViewController
@@ -29,13 +31,27 @@
     //关闭导航条毛玻璃效果  
     self.navigationController.navigationBar.translucent = NO;
     
+    
+    
+#pragma mark - 设置app的title
+    self.navigationItem.title = @"No Where";
+    
+    //设置导航条的颜色
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:36.0 / 255.0 green:47.0 / 255.0 blue:61.0 / 255.0 alpha:1.0];
+    self.navigationController.navigationBar.tintColor = kTintColor;
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:kTintColor ,NSForegroundColorAttributeName,  nil]];
+    
+    
     //添加leftItemBar，点击弹出侧边栏
     UIBarButtonItem *openItem = [[UIBarButtonItem alloc]initWithTitle:@"Menu" style:UIBarButtonItemStylePlain target:self action:@selector(openBtnPressed)];
     self.navigationItem.leftBarButtonItem = openItem;
+    openItem.tintColor =  [UIColor colorWithRed:0 green:216.0 / 255.0 blue:179.0 / 255.0 alpha:1.0];
     
     UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(openBtnPressed)];
     
     [self.view addGestureRecognizer:swipe];
+    [swipe release];
+    [openItem release];
 
     
     
@@ -45,17 +61,20 @@
     CGFloat viewHeight = CGRectGetHeight(self.view.frame);
     
     //创建home和paper按钮
-    self.homeBtn = [Function createButtonWithName:@"home" andFrame:CGRectMake(50, 0 , viewWidth / 2 - 50, kTopBtnHeight)];
+    self.homeBtn = [Function createButtonWithName:@"眼界" andFrame:CGRectMake(50, 10, (viewWidth - 100) / 2 , kTopBtnHeight - 10)];
     self.homeBtn.tag = 101;
     [self.homeBtn addTarget:self action:@selector(clickAction:) forControlEvents:UIControlEventTouchUpInside];
     //默认home按钮为选中状态
     self.homeBtn.selected = YES;
     
-    self.paperBtn = [Function createButtonWithName:@"paper" andFrame:CGRectMake(viewWidth / 2, 0 , viewWidth / 2 , kTopBtnHeight)];
+    self.paperBtn = [Function createButtonWithName:@"报告" andFrame:CGRectMake(50 + (viewWidth - 100) / 2 , 10, (viewWidth - 100) / 2 , kTopBtnHeight - 10)];
     self.paperBtn.tag = 102;
     [self.paperBtn addTarget:self action:@selector(clickAction:) forControlEvents:UIControlEventTouchUpInside];
-    self.homeBtn.backgroundColor = [UIColor yellowColor];
-    self.paperBtn.backgroundColor = [UIColor yellowColor];
+    self.homeBtn.backgroundColor = kBackgroundColor;
+    self.paperBtn.backgroundColor = kBackgroundColor;
+    
+    self.homeBtn.tintColor = kTintColor;
+    self.paperBtn.tintColor = kTintColor;
     
  
     //创建scrollView,控制home和paper两个界面的滑动切换
@@ -101,7 +120,7 @@
 -(void)openBtnPressed
 {
     NSLog(@"弹出菜单栏");
-
+    
     [self.sideMenuViewController openMenuAnimated:YES completion:nil];
 }
 

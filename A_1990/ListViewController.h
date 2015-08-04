@@ -12,6 +12,7 @@
 
 @property (nonatomic , retain) ListView *listView;
 @property (nonatomic , retain) NSMutableArray *listModelArray;
-@property (nonatomic , retain) NSMutableArray *bigImageViewArray;
+//@property (nonatomic , retain) NSMutableArray *bigImageViewArray;
+@property (nonatomic , assign) long listID;
 
 @end

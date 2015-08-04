@@ -200,6 +200,9 @@ static NSTimeInterval const kDefaultSwapAnimationClosedDuration = 0.35;
 
 - (void)openMenuAnimated:(BOOL)animated completion:(void (^)(BOOL finished))completion
 {
+#warning - 菜单栏控制器视图 相关设置
+    self.menuViewController.view.hidden = NO;
+    self.menuViewController.view.backgroundColor = [UIColor clearColor];
     if (self.open) {
         return;
     }
